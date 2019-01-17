@@ -13,7 +13,7 @@ export interface IEnv extends NodeJS.ProcessEnv {
  * @param argv - process.argv
  */
 export default async function run(
-  [, scriptPath, hookName = '', HUSKY_GIT_PARAMS]: string[],
+  [, scriptPath, gitPath, hookName = '', HUSKY_GIT_PARAMS]: string[],
   getStdinFn: () => Promise<string> = getStdin // Used for mocking
 ): Promise<number> {
   const cwd = path.resolve(scriptPath.split('node_modules')[0])
@@ -53,7 +53,7 @@ export default async function run(
 
     if (command) {
       console.log(`husky > ${hookName} (node ${process.version})`)
-      execa.shellSync(command, { cwd, env, stdio: 'inherit' })
+      execa.shellSync(command, { gitPath, env, stdio: 'inherit' })
       return 0
     }
 
